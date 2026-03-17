@@ -7,5 +7,5 @@ config.js
 node_modules/
 
 # Системные файлы
-.DS_Store
+.DS_Store 
 Thumbs.db
