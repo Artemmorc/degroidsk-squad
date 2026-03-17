@@ -1,125 +1,162 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+const supabase = window.supabase.createClient(
+    window.SUPABASE_URL, 
+    window.SUPABASE_ANON_KEY
+);
+
+let isAdmin = false;
+
+window.onload = async function() {
+    await loadSections();
+    await loadParentSections();
+};
+
+function showSection(sectionId) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    if (sectionId === 'constitution') loadSections();
 }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #202225;
-    color: #dcddde;
+function checkAdmin() {
+    const password = document.getElementById('adminPassword').value;
+    if (password === window.ADMIN_PASSWORD) {
+        isAdmin = true;
+        document.getElementById('adminControls').style.display = 'block';
+        showSection('constitution');
+    } else {
+        document.getElementById('adminError').textContent = 'Неверный пароль';
+    }
 }
 
-.app {
-    display: flex;
-    min-height: 100vh;
+async function loadSections() {
+    const { data } = await supabase
+        .from('constitution_sections')
+        .select('*')
+        .order('sort_order');
+    displaySections(data || []);
 }
 
-.sidebar {
-    width: 240px;
-    background-color: #2f3136;
-    padding: 20px 0;
+function displaySections(sections) {
+    const container = document.getElementById('sectionsList');
+    if (!container) return;
+    
+    if (sections.length === 0) {
+        container.innerHTML = '<p>Нет разделов</p>';
+        return;
+    }
+    
+    let html = '<div class="sections-tree">';
+    sections.filter(s => !s.parent_id).forEach(s => {
+        html += renderSection(s, sections, 0);
+    });
+    html += '</div>';
+    container.innerHTML = html;
 }
 
-.logo {
-    font-size: 20px;
-    font-weight: bold;
-    padding: 0 16px 20px;
-    border-bottom: 1px solid #404249;
-    color: #fff;
+function renderSection(section, allSections, level) {
+    const children = allSections.filter(s => s.parent_id === section.id);
+    let html = `
+        <div class="section-item" style="margin-left: ${level * 20}px">
+            <div class="section-title" onclick="showSectionContent(${section.id})">${section.title}</div>
+    `;
+    
+    if (isAdmin) {
+        html += `
+            <div class="admin-controls">
+                <button onclick="editSection(${section.id}, event)">✎</button>
+                <button onclick="deleteSection(${section.id}, event)">🗑</button>
+            </div>
+        `;
+    }
+    html += '</div>';
+    
+    children.forEach(child => {
+        html += renderSection(child, allSections, level + 1);
+    });
+    return html;
 }
 
-.nav-link {
-    display: block;
-    padding: 8px 16px;
-    color: #96989d;
-    text-decoration: none;
-    cursor: pointer;
+async function showSectionContent(id) {
+    const { data } = await supabase
+        .from('constitution_sections')
+        .select('*')
+        .eq('id', id)
+        .single();
+    
+    if (data) {
+        document.getElementById('sectionsList').innerHTML = `
+            <h2>${data.title}</h2>
+            <div class="section-content">${data.content || ''}</div>
+            <button onclick="loadSections()" class="btn btn-primary">← Назад</button>
+        `;
+    }
 }
 
-.nav-link:hover, .nav-link.active {
-    background-color: #404249;
-    color: #fff;
+async function loadParentSections() {
+    const { data } = await supabase
+        .from('constitution_sections')
+        .select('id, title');
+    
+    const select = document.getElementById('parentSection');
+    if (select && data) {
+        select.innerHTML = '<option value="">Корневой раздел</option>';
+        data.forEach(s => {
+            select.innerHTML += `<option value="${s.id}">${s.title}</option>`;
+        });
+    }
 }
 
-.main-content {
-    flex: 1;
-    padding: 30px;
+function showAddForm() {
+    document.getElementById('formTitle').textContent = 'Добавить раздел';
+    document.getElementById('sectionTitle').value = '';
+    document.getElementById('sectionContent').value = '';
+    document.getElementById('sectionForm').style.display = 'block';
 }
 
-.section {
-    display: none;
+function hideForm() {
+    document.getElementById('sectionForm').style.display = 'none';
 }
 
-.section.active {
-    display: block;
+async function saveSection() {
+    const title = document.getElementById('sectionTitle').value;
+    const content = document.getElementById('sectionContent').value;
+    const parentId = document.getElementById('parentSection').value || null;
+    
+    if (!title) return alert('Введите название');
+    
+    await supabase
+        .from('constitution_sections')
+        .insert([{ title, content, parent_id: parentId, sort_order: 0 }]);
+    
+    hideForm();
+    loadSections();
+    loadParentSections();
 }
 
-h1 {
-    color: #fff;
-    margin-bottom: 30px;
+async function deleteSection(id, event) {
+    event.stopPropagation();
+    if (confirm('Удалить?')) {
+        await supabase.from('constitution_sections').delete().eq('id', id);
+        loadSections();
+        loadParentSections();
+    }
 }
 
-.form-control {
-    width: 100%;
-    max-width: 400px;
-    padding: 10px;
-    margin-bottom: 15px;
-    background-color: #404249;
-    border: 1px solid #202225;
-    border-radius: 4px;
-    color: #dcddde;
-}
-
-textarea.form-control {
-    max-width: 800px;
-    min-height: 200px;
-}
-
-.btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 10px;
-}
-
-.btn-primary { background-color: #5865f2; color: white; }
-.btn-success { background-color: #3ba55d; color: white; }
-.btn-danger { background-color: #ed4245; color: white; }
-
-.section-item {
-    margin-bottom: 5px;
-    padding: 10px;
-    background-color: #2f3136;
-    border-radius: 4px;
-    cursor: pointer;
-    position: relative;
-}
-
-.section-item:hover {
-    background-color: #404249;
-}
-
-.admin-controls {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-}
-
-.admin-controls button {
-    padding: 3px 8px;
-    margin-left: 5px;
-}
-
-.section-form {
-    margin-top: 30px;
-    padding: 20px;
-    background-color: #2f3136;
-    border-radius: 4px;
-}
-
-.error {
-    color: #ed4245;
-    margin-top: 10px;
+async function editSection(id, event) {
+    event.stopPropagation();
+    const { data } = await supabase
+        .from('constitution_sections')
+        .select('*')
+        .eq('id', id)
+        .single();
+    
+    if (data) {
+        document.getElementById('formTitle').textContent = 'Редактировать';
+        document.getElementById('sectionTitle').value = data.title;
+        document.getElementById('sectionContent').value = data.content || '';
+        document.getElementById('parentSection').value = data.parent_id || '';
+        document.getElementById('sectionForm').style.display = 'block';
+    }
 }
