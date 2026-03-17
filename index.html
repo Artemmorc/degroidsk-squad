@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEGROIDSK SQUAD — Конституция</title>
+    <title>DEGROIDSK SQUAD</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="app">
-        <!-- Боковая панель (стильная) -->
         <div class="sidebar">
             <div class="logo">
                 <i class="fas fa-crown"></i>
@@ -23,19 +22,15 @@
                 </a>
             </div>
 
-            <!-- Карандашик внизу (левый нижний угол) -->
             <div class="edit-tools">
                 <button id="editToggle" class="edit-btn" onclick="toggleEditMode()">
                     <i class="fas fa-pencil-alt"></i>
-                    <span class="tooltip">Режим редактирования</span>
                 </button>
             </div>
         </div>
 
-        <!-- Основной контент -->
         <div class="main-content">
             <div id="constitution" class="section active">
-                <!-- Шапка с наворотами -->
                 <div class="content-header">
                     <h1>
                         <i class="fas fa-scroll"></i>
@@ -43,101 +38,22 @@
                     </h1>
                     <div class="header-actions" id="adminActions" style="display: none;">
                         <button onclick="showAddForm()" class="btn btn-primary">
-                            <i class="fas fa-plus"></i>
-                            Новый раздел
+                            <i class="fas fa-plus"></i> Новый раздел
                         </button>
                     </div>
                 </div>
 
-                <!-- Дерево разделов (красивое) -->
                 <div class="sections-tree" id="sectionsList"></div>
                 
-                <!-- Продвинутая форма редактирования -->
-                <div id="sectionForm" class="section-form glass-effect" style="display: none;">
-                    <div class="form-header">
-                        <h3 id="formTitle">
-                            <i class="fas fa-edit"></i>
-                            Редактирование раздела
-                        </h3>
-                        <button onclick="hideForm()" class="btn-close">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-
-                    <!-- Родительский раздел -->
-                    <div class="form-group">
-                        <label><i class="fas fa-sitemap"></i> Родительский раздел</label>
-                        <select id="parentSection" class="form-control"></select>
-                    </div>
-
-                    <!-- Название -->
-                    <div class="form-group">
-                        <label><i class="fas fa-heading"></i> Название раздела</label>
-                        <input type="text" id="sectionTitle" placeholder="Введите название..." class="form-control">
-                    </div>
-
-                    <!-- Продвинутый редактор (WYSIWYG) -->
-                    <div class="form-group">
-                        <label><i class="fas fa-paint-brush"></i> Содержимое</label>
-                        
-                        <!-- Панель инструментов редактора -->
-                        <div class="editor-toolbar">
-                            <button type="button" onclick="formatText('bold')" title="Жирный"><i class="fas fa-bold"></i></button>
-                            <button type="button" onclick="formatText('italic')" title="Курсив"><i class="fas fa-italic"></i></button>
-                            <button type="button" onclick="formatText('underline')" title="Подчеркнутый"><i class="fas fa-underline"></i></button>
-                            <span class="separator"></span>
-                            <button type="button" onclick="formatText('h1')" title="Заголовок 1">H1</button>
-                            <button type="button" onclick="formatText('h2')" title="Заголовок 2">H2</button>
-                            <button type="button" onclick="formatText('h3')" title="Заголовок 3">H3</button>
-                            <span class="separator"></span>
-                            <button type="button" onclick="formatText('ul')" title="Список"><i class="fas fa-list-ul"></i></button>
-                            <button type="button" onclick="formatText('ol')" title="Нумерованный список"><i class="fas fa-list-ol"></i></button>
-                            <span class="separator"></span>
-                            <button type="button" onclick="formatText('quote')" title="Цитата"><i class="fas fa-quote-right"></i></button>
-                            <button type="button" onclick="formatText('code')" title="Код"><i class="fas fa-code"></i></button>
-                            <span class="separator"></span>
-                            <button type="button" onclick="insertImage()" title="Вставить картинку"><i class="fas fa-image"></i></button>
-                            <button type="button" onclick="insertLink()" title="Вставить ссылку"><i class="fas fa-link"></i></button>
-                            <span class="separator"></span>
-                            <button type="button" onclick="increaseFontSize()" title="Увеличить текст"><i class="fas fa-search-plus"></i></button>
-                            <button type="button" onclick="decreaseFontSize()" title="Уменьшить текст"><i class="fas fa-search-minus"></i></button>
-                        </div>
-
-                        <!-- Текстовое поле (будет заменено на contenteditable) -->
-                        <div id="richEditor" class="rich-editor" contenteditable="true" 
-                             oninput="syncContent()"
-                             onkeyup="syncContent()"
-                             onmouseup="syncContent()"></div>
-                        
-                        <!-- Скрытое поле для хранения HTML -->
-                        <textarea id="sectionContent" style="display: none;"></textarea>
-                    </div>
-
-                    <!-- Кнопки действий -->
-                    <div class="form-actions">
-                        <button onclick="saveSection()" class="btn btn-success">
-                            <i class="fas fa-save"></i>
-                            Сохранить
-                        </button>
-                        <button onclick="hideForm()" class="btn btn-outline">
-                            <i class="fas fa-times"></i>
-                            Отмена
-                        </button>
-                    </div>
+                <div id="sectionForm" style="display: none;">
+                    <!-- Форма редактирования -->
+                    <h3 id="formTitle">Добавить раздел</h3>
+                    <select id="parentSection" class="form-control"></select>
+                    <input type="text" id="sectionTitle" placeholder="Название" class="form-control">
+                    <textarea id="sectionContent" placeholder="Содержимое" rows="10" class="form-control"></textarea>
+                    <button onclick="saveSection()" class="btn btn-success">Сохранить</button>
+                    <button onclick="hideForm()" class="btn btn-danger">Отмена</button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно для вставки изображения -->
-    <div id="imageModal" class="modal" style="display: none;">
-        <div class="modal-content glass-effect">
-            <h3>Вставить изображение</h3>
-            <input type="text" id="imageUrl" placeholder="URL картинки" class="form-control">
-            <input type="text" id="imageAlt" placeholder="Описание (alt)" class="form-control">
-            <div class="modal-actions">
-                <button onclick="insertImageUrl()" class="btn btn-success">Вставить</button>
-                <button onclick="closeImageModal()" class="btn btn-outline">Отмена</button>
             </div>
         </div>
     </div>
