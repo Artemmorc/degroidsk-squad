@@ -4,21 +4,27 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   deploy:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       
       - name: Create config.js from secrets
         run: |
-          echo "// Config file generated from GitHub Secrets" > config.js
+          echo "// Generated from Secrets" > config.js
           echo "window.SUPABASE_URL = '${{ secrets.SUPABASE_URL }}';" >> config.js
           echo "window.SUPABASE_ANON_KEY = '${{ secrets.SUPABASE_ANON_KEY }}';" >> config.js
           echo "window.ADMIN_PASSWORD = '${{ secrets.ADMIN_PASSWORD }}';" >> config.js
       
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
+          force_orphan: true
