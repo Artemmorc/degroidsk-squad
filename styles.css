@@ -1,3 +1,18 @@
+:root {
+    --bg-primary: #0a0c0f;
+    --bg-secondary: #1a1e24;
+    --bg-tertiary: #23282f;
+    --accent: #6a5acd;
+    --accent-hover: #7b6cd9;
+    --text-primary: #e4e6eb;
+    --text-secondary: #b0b3b8;
+    --text-muted: #7a7f8a;
+    --border: #2f353e;
+    --success: #3ba55d;
+    --danger: #ed4245;
+    --glass-bg: rgba(26, 30, 36, 0.8);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,9 +20,18 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #202225;
-    color: #dcddde;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* Стеклянный эффект */
+.glass-effect {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
 }
 
 .app {
@@ -15,111 +39,388 @@ body {
     min-height: 100vh;
 }
 
-.sidebar { 
-    width: 240px;
-    background-color: #2f3136;
-    padding: 20px 0;
+/* Боковая панель (ещё красивее) */
+.sidebar {
+    width: 280px;
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3);
 }
 
 .logo {
-    font-size: 20px;
-    font-weight: bold;
-    padding: 0 16px 20px;
-    border-bottom: 1px solid #404249;
-    color: #fff;
+    padding: 30px 24px;
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), #9b8cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border-bottom: 1px solid var(--border);
+}
+
+.logo i {
+    margin-right: 12px;
+    font-size: 28px;
+}
+
+.nav {
+    flex: 1;
+    padding: 20px 16px;
 }
 
 .nav-link {
-    display: block;
-    padding: 8px 16px;
-    color: #96989d;
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    color: var(--text-secondary);
     text-decoration: none;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    margin-bottom: 4px;
+}
+
+.nav-link i {
+    width: 24px;
+    font-size: 18px;
+    margin-right: 12px;
+}
+
+.nav-link:hover {
+    background: rgba(106, 90, 205, 0.1);
+    color: var(--accent);
+}
+
+.nav-link.active {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 4px 12px rgba(106, 90, 205, 0.4);
+}
+
+/* Карандашик в левом нижнем углу */
+.edit-tools {
+    padding: 24px;
+    border-top: 1px solid var(--border);
+}
+
+.edit-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: none;
+    color: white;
+    font-size: 20px;
     cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(106, 90, 205, 0.4);
 }
 
-.nav-link:hover, .nav-link.active {
-    background-color: #404249;
-    color: #fff;
+.edit-btn:hover {
+    transform: scale(1.1);
+    background: var(--accent-hover);
 }
 
+.tooltip {
+    position: absolute;
+    left: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--bg-tertiary);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    border: 1px solid var(--border);
+}
+
+.edit-btn:hover .tooltip {
+    opacity: 1;
+}
+
+/* Основной контент */
 .main-content {
     flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.content-header h1 {
+    font-size: 32px;
+    background: linear-gradient(135deg, #fff, var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.content-header h1 i {
+    margin-right: 16px;
+    color: var(--accent);
+}
+
+/* Дерево разделов */
+.sections-tree {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.section-item {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.section-item:hover {
+    border-color: var(--accent);
+    transform: translateX(5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.section-title {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+/* Админские контролы */
+.admin-controls {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.section-item:hover .admin-controls {
+    opacity: 1;
+}
+
+.admin-controls button {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.admin-controls button:hover {
+    background: var(--accent);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Продвинутый редактор */
+.rich-editor {
+    min-height: 300px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    color: var(--text-primary);
+    font-size: 16px;
+    line-height: 1.8;
+    outline: none;
+    overflow-y: auto;
+}
+
+.rich-editor:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.1);
+}
+
+.editor-toolbar {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.editor-toolbar button {
+    min-width: 32px;
+    height: 32px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.editor-toolbar button:hover {
+    background: var(--bg-tertiary);
+    color: var(--accent);
+    border-color: var(--border);
+}
+
+.separator {
+    width: 1px;
+    height: 24px;
+    background: var(--border);
+    margin: 0 5px;
+}
+
+/* Модальное окно */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    width: 400px;
     padding: 30px;
 }
 
-.section {
-    display: none;
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
 }
 
-.section.active {
-    display: block;
+/* Кнопки */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
-h1 {
-    color: #fff;
+.btn-primary {
+    background: var(--accent);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(106, 90, 205, 0.4);
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+}
+
+.btn-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+/* Форма */
+.section-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 30px;
+    z-index: 100;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
 }
 
 .form-control {
     width: 100%;
-    max-width: 400px;
-    padding: 10px;
-    margin-bottom: 15px;
-    background-color: #404249;
-    border: 1px solid #202225;
-    border-radius: 4px;
-    color: #dcddde;
+    padding: 12px 16px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all 0.3s;
 }
 
-textarea.form-control {
-    max-width: 800px;
-    min-height: 200px;
+.form-control:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.1);
 }
 
-.btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 10px;
-}
-
-.btn-primary { background-color: #5865f2; color: white; }
-.btn-success { background-color: #3ba55d; color: white; }
-.btn-danger { background-color: #ed4245; color: white; }
-
-.section-item {
-    margin-bottom: 5px;
-    padding: 10px;
-    background-color: #2f3136;
-    border-radius: 4px;
-    cursor: pointer;
-    position: relative;
-}
-
-.section-item:hover {
-    background-color: #404249;
-}
-
-.admin-controls {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-}
-
-.admin-controls button {
-    padding: 3px 8px;
-    margin-left: 5px;
-}
-
-.section-form {
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
     margin-top: 30px;
-    padding: 20px;
-    background-color: #2f3136;
-    border-radius: 4px;
-}
-
-.error {
-    color: #ed4245;
-    margin-top: 10px;
 }
