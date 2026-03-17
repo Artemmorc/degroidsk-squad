@@ -1,229 +1,125 @@
-// ==================== Supabase инициализация ====================
-const SUPABASE_URL = 'https://твой-проект.supabase.co'
-const SUPABASE_ANON_KEY = 'твой-anon-ключ'
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-
-// ==================== Глобальные переменные ====================
-let isAdmin = false
-const ADMIN_PASSWORD = 'admin123' // Простой пароль, можешь изменить
-
-// ==================== Инициализация ====================
-window.onload = async function() {
-    await loadSections()
-    setupNavigation()
-    
-    // Загружаем родительские разделы для формы
-    if (document.getElementById('parentSection')) {
-        loadParentSections()
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-// ==================== Навигация ====================
-function setupNavigation() {
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'))
-            this.classList.add('active')
-        })
-    })
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #202225;
+    color: #dcddde;
 }
 
-function showSection(sectionId) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'))
-    document.getElementById(sectionId).classList.add('active')
-    
-    // Если открыли конституцию, перезагружаем разделы
-    if (sectionId === 'constitution') {
-        loadSections()
-    }
+.app {
+    display: flex;
+    min-height: 100vh;
 }
 
-// ==================== Админка ====================
-function checkAdmin() {
-    const password = document.getElementById('adminPassword').value
-    if (password === ADMIN_PASSWORD) {
-        isAdmin = true
-        document.getElementById('adminControls').style.display = 'block'
-        document.getElementById('adminError').textContent = ''
-        showSection('constitution')
-        alert('Вы вошли как администратор!')
-    } else {
-        document.getElementById('adminError').textContent = 'Неверный пароль'
-    }
+.sidebar {
+    width: 240px;
+    background-color: #2f3136;
+    padding: 20px 0;
 }
 
-// ==================== Конституция ====================
-async function loadSections() {
-    const { data: sections, error } = await supabase
-        .from('constitution_sections')
-        .select('*')
-        .order('sort_order')
-    
-    if (error) {
-        console.error('Ошибка загрузки:', error)
-        return
-    }
-    
-    displaySections(sections || [])
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 0 16px 20px;
+    border-bottom: 1px solid #404249;
+    color: #fff;
 }
 
-function displaySections(sections) {
-    const container = document.getElementById('sectionsList')
-    if (!container) return
-    
-    if (sections.length === 0) {
-        container.innerHTML = '<p>Разделы отсутствуют</p>'
-        return
-    }
-    
-    // Строим дерево
-    const rootSections = sections.filter(s => !s.parent_id)
-    let html = '<div class="sections-tree">'
-    
-    rootSections.forEach(section => {
-        html += renderSection(section, sections, 0)
-    })
-    
-    html += '</div>'
-    container.innerHTML = html
+.nav-link {
+    display: block;
+    padding: 8px 16px;
+    color: #96989d;
+    text-decoration: none;
+    cursor: pointer;
 }
 
-function renderSection(section, allSections, level) {
-    const children = allSections.filter(s => s.parent_id === section.id)
-    const margin = level * 20
-    
-    let html = `
-        <div class="section-item" style="margin-left: ${margin}px">
-            <div class="section-title" onclick="showSectionContent(${section.id})">${section.title}</div>
-    `
-    
-    if (isAdmin) {
-        html += `
-            <div class="admin-controls">
-                <button onclick="editSection(${section.id}, event)" class="btn btn-primary">✎</button>
-                <button onclick="deleteSection(${section.id}, event)" class="btn btn-danger">🗑</button>
-            </div>
-        `
-    }
-    
-    html += '</div>'
-    
-    children.forEach(child => {
-        html += renderSection(child, allSections, level + 1)
-    })
-    
-    return html
+.nav-link:hover, .nav-link.active {
+    background-color: #404249;
+    color: #fff;
 }
 
-async function showSectionContent(sectionId) {
-    const { data: section, error } = await supabase
-        .from('constitution_sections')
-        .select('*')
-        .eq('id', sectionId)
-        .single()
-    
-    if (section) {
-        const content = `
-            <h2>${section.title}</h2>
-            <div class="section-content">${section.content || 'Нет содержимого'}</div>
-            <button onclick="loadSections()" class="btn btn-primary" style="margin-top:20px;">← Назад к разделам</button>
-        `
-        document.getElementById('sectionsList').innerHTML = content
-    }
+.main-content {
+    flex: 1;
+    padding: 30px;
 }
 
-async function loadParentSections() {
-    const { data: sections } = await supabase
-        .from('constitution_sections')
-        .select('id, title')
-    
-    const select = document.getElementById('parentSection')
-    if (select && sections) {
-        select.innerHTML = '<option value="">Корневой раздел</option>'
-        sections.forEach(s => {
-            const option = document.createElement('option')
-            option.value = s.id
-            option.textContent = s.title
-            select.appendChild(option)
-        })
-    }
+.section {
+    display: none;
 }
 
-function showAddForm() {
-    document.getElementById('formTitle').textContent = 'Добавить раздел'
-    document.getElementById('sectionTitle').value = ''
-    document.getElementById('sectionContent').value = ''
-    document.getElementById('sectionForm').style.display = 'block'
+.section.active {
+    display: block;
 }
 
-function hideForm() {
-    document.getElementById('sectionForm').style.display = 'none'
+h1 {
+    color: #fff;
+    margin-bottom: 30px;
 }
 
-async function saveSection() {
-    const title = document.getElementById('sectionTitle').value
-    const content = document.getElementById('sectionContent').value
-    const parentId = document.getElementById('parentSection').value || null
-    
-    if (!title) {
-        alert('Введите название раздела')
-        return
-    }
-    
-    const { error } = await supabase
-        .from('constitution_sections')
-        .insert([{ 
-            title, 
-            content, 
-            parent_id: parentId, 
-            sort_order: 0 
-        }])
-    
-    if (error) {
-        alert('Ошибка: ' + error.message)
-    } else {
-        hideForm()
-        await loadSections()
-        await loadParentSections()
-    }
+.form-control {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #404249;
+    border: 1px solid #202225;
+    border-radius: 4px;
+    color: #dcddde;
 }
 
-async function editSection(id, event) {
-    event.stopPropagation()
-    
-    const { data: section } = await supabase
-        .from('constitution_sections')
-        .select('*')
-        .eq('id', id)
-        .single()
-    
-    if (section) {
-        document.getElementById('formTitle').textContent = 'Редактировать раздел'
-        document.getElementById('sectionTitle').value = section.title
-        document.getElementById('sectionContent').value = section.content || ''
-        document.getElementById('parentSection').value = section.parent_id || ''
-        document.getElementById('sectionForm').style.display = 'block'
-        
-        // Сохраняем ID для редактирования
-        window.currentEditId = id
-    }
+textarea.form-control {
+    max-width: 800px;
+    min-height: 200px;
 }
 
-async function deleteSection(id, event) {
-    event.stopPropagation()
-    
-    if (confirm('Удалить раздел? Все дочерние разделы тоже удалятся!')) {
-        const { error } = await supabase
-            .from('constitution_sections')
-            .delete()
-            .eq('id', id)
-        
-        if (error) {
-            alert('Ошибка: ' + error.message)
-        } else {
-            await loadSections()
-            await loadParentSections()
-        }
-    }
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.btn-primary { background-color: #5865f2; color: white; }
+.btn-success { background-color: #3ba55d; color: white; }
+.btn-danger { background-color: #ed4245; color: white; }
+
+.section-item {
+    margin-bottom: 5px;
+    padding: 10px;
+    background-color: #2f3136;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+}
+
+.section-item:hover {
+    background-color: #404249;
+}
+
+.admin-controls {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.admin-controls button {
+    padding: 3px 8px;
+    margin-left: 5px;
+}
+
+.section-form {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #2f3136;
+    border-radius: 4px;
+}
+
+.error {
+    color: #ed4245;
+    margin-top: 10px;
 }
