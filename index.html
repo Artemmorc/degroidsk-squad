@@ -8,42 +8,36 @@
 </head>
 <body>
     <div class="app">
-        <!-- Сайдбар -->
         <div class="sidebar">
             <div class="logo">DEGROIDSK</div>
             <nav class="nav">
                 <a href="#" onclick="showSection('constitution')" class="nav-link active">Конституция</a>
-                <a href="#" onclick="showSection('admin')" class="nav-link" id="adminLink">Админ</a>
+                <a href="#" onclick="showSection('admin')" class="nav-link">Админ</a>
             </nav>
         </div>
 
-        <!-- Основной контент -->
         <div class="main-content">
             <!-- Конституция -->
             <div id="constitution" class="section active">
                 <h1>Конституция DEGROIDSK SQUAD</h1>
-                <div id="adminControls" style="display:none; margin-bottom:20px;">
+                <div id="adminControls" style="display:none;">
                     <button onclick="showAddForm()" class="btn btn-success">+ Добавить раздел</button>
                 </div>
                 <div id="sectionsList"></div>
                 
-                <!-- Форма добавления/редактирования -->
                 <div id="sectionForm" style="display:none;" class="section-form">
                     <h3 id="formTitle">Добавить раздел</h3>
-                    <select id="parentSection" class="form-control">
-                        <option value="">Корневой раздел</option>
-                    </select>
-                    <input type="text" id="sectionTitle" placeholder="Название раздела" class="form-control">
+                    <select id="parentSection" class="form-control"></select>
+                    <input type="text" id="sectionTitle" placeholder="Название" class="form-control">
                     <textarea id="sectionContent" placeholder="Содержимое" rows="10" class="form-control"></textarea>
                     <button onclick="saveSection()" class="btn btn-success">Сохранить</button>
                     <button onclick="hideForm()" class="btn btn-danger">Отмена</button>
                 </div>
             </div>
 
-            <!-- Админка (простая) -->
+            <!-- Админка -->
             <div id="admin" class="section">
                 <h1>Админ-панель</h1>
-                <p>Введите пароль админа для редактирования:</p>
                 <input type="password" id="adminPassword" placeholder="Пароль" class="form-control">
                 <button onclick="checkAdmin()" class="btn btn-primary">Войти</button>
                 <div id="adminError" class="error"></div>
@@ -51,6 +45,7 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
