@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конституция DEGROIDSK</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-crown"></i>
+                <span>DEGROIDSK</span>
+            </div>
+            <div class="edit-tools">
+                <button id="editToggle" class="edit-btn" onclick="toggleEditMode()">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h1><i class="fas fa-scroll"></i> Конституция DEGROIDSK SQUAD</h1>
+            
+            <!-- Пароль (появляется при клике на карандаш) -->
+            <div id="passwordModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <h3>Введите пароль</h3>
+                    <input type="password" id="adminPassword" placeholder="Пароль" class="form-control">
+                    <div class="modal-actions">
+                        <button onclick="checkPassword()" class="btn btn-primary">Войти</button>
+                        <button onclick="closePasswordModal()" class="btn btn-outline">Отмена</button>
+                    </div>
+                    <p id="passwordError" class="error"></p>
+                </div>
+            </div>
+
+            <!-- Сама конституция -->
+            <div id="constitutionContent" class="constitution-content"></div>
+
+            <!-- Редактор (только для админа) -->
+            <div id="editorPanel" style="display: none;">
+                <textarea id="editor" class="editor" placeholder="Введите текст конституции..."></textarea>
+                <div class="editor-actions">
+                    <button onclick="saveConstitution()" class="btn btn-success">Сохранить</button>
+                    <button onclick="exitEditMode()" class="btn btn-outline">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
