@@ -3,190 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEGROIDSK SQUAD — Конституция</title>
-    
-    <!-- Font Awesome для иконок -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Наши стили -->
+    <title>Конституция DEGROIDSK</title>
     <link rel="stylesheet" href="styles.css">
-    
-    <style>
-        /* Дополнительные стили для форм */
-        .section-form {
-            background: #2f3136;
-            padding: 30px;
-            border-radius: 12px;
-            margin-top: 30px;
-            border: 1px solid #404249;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #b9bbbe;
-            font-size: 14px;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px 16px;
-            background: #404249;
-            border: 1px solid #202225;
-            border-radius: 8px;
-            color: #dcddde;
-            font-size: 14px;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: #5865f2;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-right: 10px;
-        }
-        
-        .btn-primary {
-            background: #5865f2;
-            color: white;
-        }
-        
-        .btn-success {
-            background: #3ba55d;
-            color: white;
-        }
-        
-        .btn-danger {
-            background: #ed4245;
-            color: white;
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #404249;
-            color: #dcddde;
-        }
-        
-        .btn-outline:hover {
-            border-color: #5865f2;
-            color: #5865f2;
-        }
-        
-        .section-content-view {
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .section-content {
-            background: #2f3136;
-            padding: 30px;
-            border-radius: 12px;
-            margin-top: 20px;
-            line-height: 1.8;
-            border: 1px solid #404249;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #72767d;
-            font-size: 16px;
-        }
-        
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: #404249;
-        }
-        
-        .admin-controls {
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-        
-        .section-item:hover .admin-controls {
-            opacity: 1;
-        }
-        
-        .admin-controls button {
-            background: transparent;
-            border: none;
-            color: #b9bbbe;
-            cursor: pointer;
-            padding: 5px 10px;
-            font-size: 14px;
-        }
-        
-        .admin-controls button:hover {
-            color: #5865f2;
-        }
-        
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        
-        .modal-content {
-            background: #2f3136;
-            padding: 30px;
-            border-radius: 12px;
-            width: 400px;
-            border: 1px solid #404249;
-        }
-        
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .header-actions {
-            display: flex;
-            gap: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="app">
-        <!-- Боковая панель -->
         <div class="sidebar">
             <div class="logo">
-                <i class="fas fa-crown" style="color: #5865f2;"></i>
+                <i class="fas fa-crown"></i>
                 <span>DEGROIDSK</span>
             </div>
-            
-            <div class="nav">
-                <a href="#" onclick="showSection('constitution')" class="nav-link active">
-                    <i class="fas fa-book-open"></i>
-                    <span>Конституция</span>
-                </a>
-            </div>
-
-            <!-- Карандашик в левом нижнем углу -->
             <div class="edit-tools">
                 <button id="editToggle" class="edit-btn" onclick="toggleEditMode()">
                     <i class="fas fa-pencil-alt"></i>
@@ -194,70 +21,35 @@
             </div>
         </div>
 
-        <!-- Основной контент -->
         <div class="main-content">
-            <!-- Конституция -->
-            <div id="constitution" class="section active">
-                <div class="content-header">
-                    <h1>
-                        <i class="fas fa-scroll" style="color: #5865f2;"></i>
-                        Конституция DEGROIDSK SQUAD
-                    </h1>
-                    <div class="header-actions" id="adminActions" style="display: none;">
-                        <button onclick="showAddForm()" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Новый раздел
-                        </button>
+            <h1><i class="fas fa-scroll"></i> Конституция DEGROIDSK SQUAD</h1>
+            
+            <!-- Пароль (появляется при клике на карандаш) -->
+            <div id="passwordModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <h3>Введите пароль</h3>
+                    <input type="password" id="adminPassword" placeholder="Пароль" class="form-control">
+                    <div class="modal-actions">
+                        <button onclick="checkPassword()" class="btn btn-primary">Войти</button>
+                        <button onclick="closePasswordModal()" class="btn btn-outline">Отмена</button>
                     </div>
+                    <p id="passwordError" class="error"></p>
                 </div>
+            </div>
 
-                <!-- Список разделов -->
-                <div class="sections-tree" id="sectionsList">
-                    <div class="empty-state">
-                        <i class="fas fa-scroll"></i>
-                        <p>Загрузка разделов...</p>
-                    </div>
-                </div>
-                
-                <!-- Форма добавления/редактирования раздела -->
-                <div id="sectionForm" class="section-form" style="display: none;">
-                    <h3 id="formTitle" style="margin-bottom: 20px; color: #fff;">
-                        <i class="fas fa-edit" style="margin-right: 10px; color: #5865f2;"></i>
-                        Добавить раздел
-                    </h3>
-                    
-                    <div class="form-group">
-                        <label><i class="fas fa-sitemap" style="margin-right: 8px;"></i>Родительский раздел</label>
-                        <select id="parentSection" class="form-control">
-                            <option value="">Корневой раздел</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label><i class="fas fa-heading" style="margin-right: 8px;"></i>Название раздела</label>
-                        <input type="text" id="sectionTitle" placeholder="Введите название..." class="form-control">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label><i class="fas fa-align-left" style="margin-right: 8px;"></i>Содержимое</label>
-                        <textarea id="sectionContent" placeholder="Введите текст раздела..." rows="10" class="form-control"></textarea>
-                    </div>
-                    
-                    <div class="form-actions" style="display: flex; gap: 10px; margin-top: 20px;">
-                        <button onclick="saveSection()" class="btn btn-success">
-                            <i class="fas fa-save"></i> Сохранить
-                        </button>
-                        <button onclick="hideForm()" class="btn btn-outline">
-                            <i class="fas fa-times"></i> Отмена
-                        </button>
-                    </div>
+            <!-- Сама конституция -->
+            <div id="constitutionContent" class="constitution-content"></div>
+
+            <!-- Редактор (только для админа) -->
+            <div id="editorPanel" style="display: none;">
+                <textarea id="editor" class="editor" placeholder="Введите текст конституции..."></textarea>
+                <div class="editor-actions">
+                    <button onclick="saveConstitution()" class="btn btn-success">Сохранить</button>
+                    <button onclick="exitEditMode()" class="btn btn-outline">Отмена</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Подключение скриптов -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
