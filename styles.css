@@ -1,0 +1,207 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #202225;
+    color: #dcddde;
+}
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Сайдбар */
+.sidebar {
+    width: 240px;
+    background-color: #2f3136;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 0 16px 20px;
+    border-bottom: 1px solid #404249;
+    margin-bottom: 20px;
+}
+
+.nav {
+    flex: 1;
+}
+
+.nav-link {
+    display: block;
+    padding: 8px 16px;
+    color: #96989d;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.nav-link:hover {
+    background-color: #404249;
+    color: #dcddde;
+}
+
+.nav-link.active {
+    background-color: #404249;
+    color: #fff;
+}
+
+.user-info {
+    padding: 16px;
+    border-top: 1px solid #404249;
+    font-size: 14px;
+}
+
+/* Основной контент */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+h1 {
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+/* Формы и элементы */
+.form-control {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #404249;
+    border: 1px solid #202225;
+    border-radius: 4px;
+    color: #dcddde;
+    font-size: 14px;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #5865f2;
+}
+
+textarea.form-control {
+    max-width: 800px;
+    font-family: monospace;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.btn-primary {
+    background-color: #5865f2;
+    color: white;
+}
+
+.btn-success {
+    background-color: #3ba55d;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #ed4245;
+    color: white;
+}
+
+.error {
+    color: #ed4245;
+    margin-top: 10px;
+}
+
+/* Разделы конституции */
+.section-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #2f3136;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.section-item:hover {
+    background-color: #404249;
+}
+
+.section-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.section-content {
+    padding: 20px;
+    background-color: #2f3136;
+    border-radius: 4px;
+    white-space: pre-wrap;
+}
+
+.admin-controls {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+/* Админ-панель */
+.admin-tabs {
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    background-color: #2f3136;
+    border: none;
+    color: #96989d;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 4px;
+}
+
+.tab-btn.active {
+    background-color: #404249;
+    color: white;
+}
+
+.admin-tab {
+    display: none;
+}
+
+.admin-tab.active {
+    display: block;
+}
+
+.user-card, .verification-card {
+    background-color: #2f3136;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.user-card button, .verification-card button {
+    margin-right: 10px;
+}
