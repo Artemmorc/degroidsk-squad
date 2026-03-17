@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEGROIDSK SQUAD</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Сайдбар -->
+        <div class="sidebar">
+            <div class="logo">DEGROIDSK</div>
+            <nav class="nav">
+                <a href="#" onclick="showSection('constitution')" class="nav-link active">Конституция</a>
+                <a href="#" onclick="showSection('login')" class="nav-link" id="loginLink">Вход</a>
+                <a href="#" onclick="showSection('register')" class="nav-link" id="registerLink">Регистрация</a>
+                <a href="#" onclick="logout()" class="nav-link" id="logoutLink" style="display:none">Выйти</a>
+            </nav>
+            <div class="user-info" id="userInfo"></div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="main-content">
+            <!-- Конституция -->
+            <div id="constitution" class="section active">
+                <h1>Конституция DEGROIDSK SQUAD</h1>
+                <div id="adminControls" style="display:none; margin-bottom:20px;">
+                    <button onclick="showAddForm()" class="btn btn-success">+ Добавить раздел</button>
+                </div>
+                <div id="sectionsList"></div>
+                
+                <!-- Форма добавления/редактирования раздела (скрыта) -->
+                <div id="sectionForm" style="display:none;" class="section-form">
+                    <h3 id="formTitle">Добавить раздел</h3>
+                    <select id="parentSection" class="form-control">
+                        <option value="">Корневой раздел</option>
+                    </select>
+                    <input type="text" id="sectionTitle" placeholder="Название раздела" class="form-control">
+                    <textarea id="sectionContent" placeholder="Содержимое (можно Markdown)" rows="10" class="form-control"></textarea>
+                    <button onclick="saveSection()" class="btn btn-success">Сохранить</button>
+                    <button onclick="hideForm()" class="btn btn-danger">Отмена</button>
+                </div>
+            </div>
+
+            <!-- Вход -->
+            <div id="login" class="section">
+                <h1>Вход</h1>
+                <form onsubmit="handleLogin(event)">
+                    <input type="email" id="loginEmail" placeholder="Email" class="form-control" required>
+                    <input type="password" id="loginPassword" placeholder="Пароль" class="form-control" required>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                </form>
+                <p class="error" id="loginError"></p>
+            </div>
+
+            <!-- Регистрация -->
+            <div id="register" class="section">
+                <h1>Регистрация</h1>
+                <form onsubmit="handleRegister(event)">
+                    <input type="email" id="regEmail" placeholder="Email" class="form-control" required>
+                    <input type="text" id="regUsername" placeholder="Имя пользователя" class="form-control" required>
+                    <input type="text" id="regMinecraft" placeholder="Ник в Minecraft" class="form-control" required>
+                    <input type="password" id="regPassword" placeholder="Пароль" class="form-control" required>
+                    <button type="submit" class="btn btn-success">Зарегистрироваться</button>
+                </form>
+                <p class="error" id="regError"></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>
