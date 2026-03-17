@@ -30,6 +30,7 @@ body {
     padding: 0 16px 20px;
     border-bottom: 1px solid #404249;
     margin-bottom: 20px;
+    color: #fff;
 }
 
 .nav {
@@ -42,6 +43,7 @@ body {
     color: #96989d;
     text-decoration: none;
     transition: background-color 0.2s;
+    cursor: pointer;
 }
 
 .nav-link:hover {
@@ -52,12 +54,6 @@ body {
 .nav-link.active {
     background-color: #404249;
     color: #fff;
-}
-
-.user-info {
-    padding: 16px;
-    border-top: 1px solid #404249;
-    font-size: 14px;
 }
 
 /* Основной контент */
@@ -78,6 +74,7 @@ body {
 h1 {
     margin-bottom: 30px;
     font-size: 28px;
+    color: #fff;
 }
 
 /* Формы и элементы */
@@ -100,6 +97,7 @@ h1 {
 
 textarea.form-control {
     max-width: 800px;
+    min-height: 200px;
     font-family: monospace;
 }
 
@@ -110,6 +108,7 @@ textarea.form-control {
     font-size: 14px;
     cursor: pointer;
     transition: opacity 0.2s;
+    margin-right: 10px;
 }
 
 .btn:hover {
@@ -138,11 +137,12 @@ textarea.form-control {
 
 /* Разделы конституции */
 .section-item {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     padding: 10px;
     background-color: #2f3136;
     border-radius: 4px;
     cursor: pointer;
+    position: relative;
 }
 
 .section-item:hover {
@@ -159,49 +159,28 @@ textarea.form-control {
     background-color: #2f3136;
     border-radius: 4px;
     white-space: pre-wrap;
+    margin-top: 20px;
 }
 
 .admin-controls {
-    margin-top: 10px;
-    display: flex;
-    gap: 10px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }
 
-/* Админ-панель */
-.admin-tabs {
-    margin-bottom: 20px;
+.admin-controls button {
+    padding: 3px 8px;
+    margin-left: 5px;
+    font-size: 12px;
 }
 
-.tab-btn {
-    padding: 10px 20px;
+.section-form {
+    margin-top: 30px;
+    padding: 20px;
     background-color: #2f3136;
-    border: none;
-    color: #96989d;
-    cursor: pointer;
-    margin-right: 5px;
     border-radius: 4px;
 }
 
-.tab-btn.active {
-    background-color: #404249;
-    color: white;
-}
-
-.admin-tab {
-    display: none;
-}
-
-.admin-tab.active {
-    display: block;
-}
-
-.user-card, .verification-card {
-    background-color: #2f3136;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-}
-
-.user-card button, .verification-card button {
-    margin-right: 10px;
+#sectionsList {
+    margin-top: 20px;
 }
